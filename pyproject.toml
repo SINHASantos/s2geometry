@@ -29,17 +29,17 @@ content-type = "text/plain"
 [project.urls]
 Source = "https://github.com/google/s2geometry"
 
-[project.optional-dependencies]
+[dependency-groups]
 test = [
     "pytest",
 ]
 
 [build-system]
 requires = [
-    "wheel",
+    "cmake_build_extension",
     "setuptools",
     "setuptools_scm[toml]",
-    "cmake_build_extension",
+    "swig",
 ]
 build-backend = "setuptools.build_meta"
 
@@ -60,3 +60,15 @@ namespaces = false
 # The same as the default.  See #450.
 # https://setuptools-scm.readthedocs.io/en/latest/config/#setuptools_scm._config.DEFAULT_TAG_REGEX
 tag_regex = "^(?:[\\w-]+-)?(?P<version>[vV]?\\d+(?:\\.\\d+){0,2}[^\\+]*)(?:\\+.*)?$"
+ 
+[tool.cibuildwheel]
+# we only need to build with CPython 3.10 (because of the limited API / stable ABI)
+build = "cp310-*"
+test-groups = ["test"]
+test-requires = ["abi3audit"]
+test-command = "pytest {project}/src/python/s2geometry_test.py && abi3audit --strict --report {project}/dist/*.whl"
+
+[tool.cibuildwheel.macos]
+# delocate is not needed because BUILD_SHARED_LIBS is OFF in setup.py,
+# so all dependencies are statically linked into the extension module.
+repair-wheel-command = ""
