@@ -36,9 +36,9 @@ The Python bindings follow the C++ API closely but with Pythonic conventions:
 - Method names are converted to snake_case (converted from UpperCamelCase C++ function names)
 
 **Properties vs. Methods:**
-- Simple coordinate accessors are properties: `point.x`, `point.y`, `interval.lo`, `interval.hi`
+- Simple accessors that return internal state (including trivial unit conversions) are properties: `point.x`, `point.y`, `interval.lo`, `interval.hi`, `angle.radians`, `angle.degrees`
 - Properties are always read-only. To create a modified object, use a constructor or factory method.
-- Other functions are not properties: `angle.radians()`, `angle.degrees()`, `interval.length()`
+- Other functions are methods: `interval.length()`, `angle.normalized()`, `angle.sin()`
 
 **Invalid Values:**
 - Invalid inputs to constructions or functions raises `ValueError`.
