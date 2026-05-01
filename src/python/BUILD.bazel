@@ -32,6 +32,7 @@ pybind_extension(
         ":s1angle_bindings",
         ":s1interval_bindings",
         ":s2point_bindings",
+        ":s2latlng_bindings",
     ],
 )
 
@@ -84,6 +85,15 @@ pybind_library(
     ],
 )
 
+pybind_library(
+    name = "s2latlng_bindings",
+    srcs = ["s2latlng_bindings.cc"],
+    deps = [
+        "//:s2",
+        "@abseil-cpp//absl/strings",
+    ],
+)
+
 # ========================================
 # Python Tests
 # ========================================
@@ -121,5 +131,11 @@ py_test(
 py_test(
     name = "s2point_test",
     srcs = ["s2point_test.py"],
+    deps = [":s2geometry_pybind"],
+)
+
+py_test(
+    name = "s2latlng_test",
+    srcs = ["s2latlng_test.py"],
     deps = [":s2geometry_pybind"],
 )

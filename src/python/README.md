@@ -43,6 +43,8 @@ The Python bindings follow the C++ API closely but with Pythonic conventions:
 **Invalid Values:**
 - Invalid inputs to constructions or functions raises `ValueError`.
 - Example: `S1Interval(0.0, 4.0)` raises `ValueError` because `4.0 > π`.
+- Some classes change the behavior of operations to guarantee validity.
+- Example: `S2LatLng` arithmetic operators automatically clamp the result to a valid range whereas in C++ these operators can produce invalid states.
 - Note: In C++, these conditions trigger `ABSL_DCHECK` assertions. The bindings prevent these assertions from firing by pre-validating inputs.
 - Note: Python bindings check for invalid inputs and throw C++ exceptions which are caught by
   pybind and converted to Python exceptions. Exceptions are normally prohibited by the C++
